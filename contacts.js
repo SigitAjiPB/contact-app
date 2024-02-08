@@ -1,11 +1,11 @@
 const fs = require('fs');
 
-const readline = require('readline');
+// const readline = require('readline');
 
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
+// const rl = readline.createInterface({
+//   input: process.stdin,
+//   output: process.stdout,
+// });
 
 // membuat folder data
 const dirPath = './data';
@@ -21,27 +21,32 @@ if(!fs.existsSync(dataPath)) {
 }
 
 
-const tulisPertanyaan = (pertanyaan) => {
-  return new Promise((resolve, reject) => {
-    rl.question(pertanyaan, (nama) => {
-      resolve(nama);
-    })
+// const tulisPertanyaan = (pertanyaan) => {
+//   return new Promise((resolve, reject) => {
+//     rl.question(pertanyaan, (nama) => {
+//       resolve(nama);
+//     })
 
-  })
-}
+//   })
+// }
 
 const simpanContact = (nama, email, noTelp) => {
   const contact = {nama, email, noTelp}
   const fileBuffer = fs.readFileSync('data/contacts.json', 'utf-8')
   const contacts = JSON.parse(fileBuffer)
 
+  //ceck duplicates 'nama'
+  const duplicates = contacts.find((contact) => contact.nama === nama)
+  if (duplicates) {
+    console.log('contact sudah terdaftar gunakan nama lain.');
+    return false;
+  }
+
   contacts.push(contact)
   fs.writeFileSync('data/contacts.json', JSON.stringify(contacts))
 
-  rl.close()
 }
 
 module.exports = {
-  tulisPertanyaan,
   simpanContact,
 }
