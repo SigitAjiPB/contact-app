@@ -21,6 +21,13 @@ if(!fs.existsSync(dataPath)) {
 }
 
 
+const loadContact =() => {
+  const fileBuffer = fs.readFileSync('data/contacts.json', 'utf-8')
+  const contacts = JSON.parse(fileBuffer)
+
+  return contacts;
+}
+
 // const tulisPertanyaan = (pertanyaan) => {
 //   return new Promise((resolve, reject) => {
 //     rl.question(pertanyaan, (nama) => {
@@ -32,8 +39,9 @@ if(!fs.existsSync(dataPath)) {
 
 const simpanContact = (nama, email, noTelp) => {
   const contact = {nama, email, noTelp}
-  const fileBuffer = fs.readFileSync('data/contacts.json', 'utf-8')
-  const contacts = JSON.parse(fileBuffer)
+
+  const contacts = loadContact()
+
 
   //ceck duplicates 'nama'
   const duplicates = contacts.find((contact) => contact.nama === nama)
@@ -47,6 +55,40 @@ const simpanContact = (nama, email, noTelp) => {
 
 }
 
+
+const listContact = ()=> {
+  const contacts = loadContact();
+  console.log(`Daftar Contacts:`)
+  contacts.forEach((contact, i) => {
+    console.log(`${i+1}. ${contact.nama} - ${contact.noTelp}`)
+  })
+}
+
+const detailContact = (nama)=> {
+  const contacts = loadContact()
+
+  const contact = contacts.find((contact) => {
+    contact.nama.toLowerCase() === nama.toLowerCase();
+  })
+
+  if (!contact) {
+    console.log(`${nama} tidak di temukan.`)
+    return false
+  }
+
+  console.log(contact.nama)
+  console.log(contact.noTelp)
+
+  if (contact.email) {
+    console.log(contact.email)
+  }
+
+
+
+}
+
 module.exports = {
   simpanContact,
+  listContact,
+  detailContact,
 }
