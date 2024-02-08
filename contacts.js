@@ -17,7 +17,7 @@ if(!fs.existsSync(dirPath)) {
 // membuat file contacts.json jika belum ada
 const dataPath = './data/contacts.json';
 if(!fs.existsSync(dataPath)) {
-  fs.writeFileSync(dataPath, '[]', 'utf8');
+  fs.writeFileSync(dataPath, '[]', 'utf-8');
 }
 
 
@@ -55,7 +55,7 @@ const simpanContact = (nama, email, noTelp) => {
 
 }
 
-
+//function list Contact feature
 const listContact = ()=> {
   const contacts = loadContact();
   console.log(`Daftar Contacts:`)
@@ -64,11 +64,12 @@ const listContact = ()=> {
   })
 }
 
+//function see contact detail feature
 const detailContact = (nama)=> {
   const contacts = loadContact()
 
   const contact = contacts.find((contact) => {
-    contact.nama.toLowerCase() === nama.toLowerCase();
+    contact.nama.toLowerCase() === nama.toLowerCase() ;
   })
 
   if (!contact) {
@@ -82,13 +83,25 @@ const detailContact = (nama)=> {
   if (contact.email) {
     console.log(contact.email)
   }
+}
 
+// function to delete contact feature
+const deleteContact = (nama) => {
+  const contacts = loadContact()
+  const newContact = contacts.filter((contact)=> {
+    contact.nama.toLowerCase() !== nama.toLowerCase()
+  })
 
-
+  if (contacts.length === newContact.length) {
+    console.log(`${nama} tidak bzzz di temukan.`)
+    return false
+  }
+  fs.writeFileSync('data/contacts.json', JSON.stringify(newContact))
 }
 
 module.exports = {
   simpanContact,
   listContact,
   detailContact,
+  deleteContact
 }

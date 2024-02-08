@@ -45,12 +45,30 @@ yargs.command({
   command: 'detail',
   describe: 'menampilkan sebuah detail pada kontak',
   builder: {
-    describe: 'Nama Lengkap',
-    demandOption: true,
-    typeof: 'string',
+    nama: {
+      describe: 'Menampilkan sebuah nama lengkap',
+      demandOption: true,
+      typeof: 'string',
+    }
   },
   handler(argv) {
     contacts.detailContact(argv.nama)
+  }
+})
+
+
+yargs.command({
+  command: 'delete',
+  describe: 'Menghapus sebuah kontak berdasarkan nama',
+  builder: {
+    nama: {
+      describe: 'Menampilkan sebuah nama lengkap',
+      demandOption: true,
+      typeof: 'string',
+    }
+  },
+  handler(argv) {
+    contacts.deleteContact(argv.nama)
   }
 })
 
